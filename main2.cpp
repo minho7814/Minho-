@@ -58,6 +58,9 @@ void bfs() {
 		unsigned int c = d.cursor;
 		unsigned int x = d.x;
 		unsigned int que = find_queue(x, s);
+		if (dist[{s, c, x}] > n * (n - 1) / 2 - floor((n - 1) / 2)) { // 포인터 비용에 따른 가지치기.
+			continue;
+		}
 		/*
 		auto it = dist.find({ s, c, x });
 		cout << s << ":" << c << ":" << x << ":"
