@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <deque>
 #include <unordered_map>
 #include <vector>
@@ -38,7 +38,6 @@ int arr[32];
 unordered_map<Data, int, DataHash> dist;
 int ans = 1e9;
 int kth[65536][16]; // 전처리됨.
-size_t cnt = 0;
 
 unsigned int insert(unsigned int N, int K) {
 	return N | (1 << K);
@@ -53,7 +52,6 @@ void bfs() {
 	q.push_front({ 0u, 0u, 0u });
 	dist[{ 0u, 0u, 0u }] = 0;
 	while (!q.empty()) {
-		cnt++;
 		Data d = q.front();
 		q.pop_front();
 		unsigned int s = d.s;
@@ -139,6 +137,6 @@ int main(void) {
 		}
 	}
 	bfs();
-	cout << ans << " " << cnt;
+	cout << ans;
 	return 0;
 }
