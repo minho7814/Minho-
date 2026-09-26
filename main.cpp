@@ -37,7 +37,7 @@ bool operator==(const Data& a, const Data& b) {
 }
 
 /*
-* Data: {ÇöÀç ¹®ÀÚ¿­, ÇöÀç Å¥, Ä¿¼­ À§Ä¡(¾Õ¿¡ ÀÖ´Â ¹®ÀÚ °¹¼ö), ÇöÀç±îÁö Ã³¸®ÇÑ ¹®ÀÚ ¼ö}
+* Data: {í˜„ì¬ ë¬¸ìì—´, í˜„ì¬ í, ì»¤ì„œ ìœ„ì¹˜(ì•ì— ìˆëŠ” ë¬¸ì ê°¯ìˆ˜), í˜„ì¬ê¹Œì§€ ì²˜ë¦¬í•œ ë¬¸ì ìˆ˜}
 */
 
 int n;
@@ -46,7 +46,7 @@ unordered_map<Data, int, DataHash> dist;
 int ans = 1e9;
 
 void bfs() {
-	deque<Data> q; // ÀÌ¸§Àº qÀÎµ¥ »ç½Ç dq.
+	deque<Data> q; // ì´ë¦„ì€ qì¸ë° ì‚¬ì‹¤ dq.
 	q.push_front({ {}, {}, 0, 0 });
 	dist[{ {}, {}, 0, 0 }] = 0;
 	while (!q.empty()) {
@@ -57,15 +57,10 @@ void bfs() {
 		int c = d.cursor;
 		int x = d.x;
 		if (s.size() == n) {
-			bool check = true;
-			for (int i = 1; i < n; i++) {
-				if (s[i - 1] > s[i]) check = false;
-			}
-			if (!check) continue;
 			ans = min(ans, dist[{s, que, c, x}]);
 			continue;
 		}
-		// in x Ã³¸®.
+		// in x ì²˜ë¦¬.
 		if (x < n && (s.empty() || (c == 0 || s[c - 1] < arr[x]) && (c == s.size() || s[c] > arr[x]))) {
 			vector<int> s2 = s;
 			s2.insert(s2.begin() + c, arr[x]);
@@ -76,7 +71,7 @@ void bfs() {
 			}
 		}
 
-		// Å¥ Ã³¸®. (push)
+		// í ì²˜ë¦¬. (push)
 		vector<int> que2 = que;
 		que2.push_back(arr[x]);
 		if (x < n && (dist.find({ s, que2, c, x + 1 }) == dist.end() ||
@@ -84,7 +79,7 @@ void bfs() {
 			dist[{ s, que2, c, x + 1 }] = dist[{s, que, c, x}] + 1;
 			q.push_back({ s, que2, c, x + 1 });
 		}
-		// pop Ã³¸®.
+		// pop ì²˜ë¦¬.
 		if (!que.empty() && (c == 0 || s.empty() || s[c - 1] < que.front()) && (c == s.size() || s[c] > que.front())) {
 			vector<int> s2 = s;
 			s2.insert(s2.begin() + c, que.front());
@@ -92,19 +87,19 @@ void bfs() {
 			que2.erase(que2.begin());
 			if (dist.find({ s2, que2, c + 1, x }) == dist.end() ||
 				dist[{ s2, que2, c + 1, x}] > dist[{s, que, c, x}] + 1) {
-				// Âü°í·Î x°¡ Áõ°¡ÇÏÁö ¾Ê´Â ÀÌÀ¯´Â 
-				// ÀÌ Çàµ¿¿¡¼­ pop¸¸ ÇÏ±â ¶§¹®¿¡ »õ·Î Ã³¸®ÇÑ ¹®ÀÚ°¡ ¾øÀ½.
+				// ì°¸ê³ ë¡œ xê°€ ì¦ê°€í•˜ì§€ ì•ŠëŠ” ì´ìœ ëŠ” 
+				// ì´ í–‰ë™ì—ì„œ popë§Œ í•˜ê¸° ë•Œë¬¸ì— ìƒˆë¡œ ì²˜ë¦¬í•œ ë¬¸ìê°€ ì—†ìŒ.
 				dist[{ s2, que2, c + 1, x}] = dist[{s, que, c, x}] + 1;
 				q.push_back({ s2, que2, c + 1, x });
 			}
 		}
-		// ptr++ Ã³¸®.
+		// ptr++ ì²˜ë¦¬.
 		if (c != s.size() && (dist.find({ s, que, c + 1, x }) == dist.end() ||
 			dist[{ s, que, c + 1, x }] > dist[{s, que, c, x}] + 1)) {
 			dist[{ s, que, c + 1, x }] = dist[{s, que, c, x}] + 1;
 			q.push_back({ s, que, c + 1, x });
 		}
-		// ptr-- Ã³¸®. 
+		// ptr-- ì²˜ë¦¬. 
 		if (c != 0 && (dist.find({ s, que, c - 1, x }) == dist.end() ||
 			dist[{ s, que, c - 1, x }] > dist[{s, que, c, x}] + 1)) {
 			dist[{ s, que, c - 1, x }] = dist[{s, que, c, x}] + 1;
